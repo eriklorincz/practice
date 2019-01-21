@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <string>
 
 using namespace std;
 
@@ -17,13 +18,13 @@ struct person
 class linked_list
 {
 private:
-    person *head, *tail;
+    person *head;
 
 public:
     linked_list()
     {
-        head = nullptr;
-        tail = nullptr;
+        head = new person;
+        head->next = nullptr;
     }
 
     void add_ordered(string nname, double nweight, double nheight, double nbmi)
@@ -40,47 +41,26 @@ public:
             correct = temp;
             temp = temp->next;
         }
+
         person *tmp = new person;
 
-        //giving value
         tmp->name = nname;
         tmp->weight = nweight;
         tmp->height = nheight;
         tmp->bmi = nbmi;
         tmp->next = nullptr;
 
-        //this is the first node
-        if (correct == nullptr)
-        {
-            head = tmp;
-            tail = tmp;
-        }
-        //the node has to be the new first
-        else if((correct == head) && (head->name > nname))
-        {
-            tmp->next = head;
-            head = tmp;
-        }
-        //insert to the end of the list
-        else if(correct->next == nullptr)
-        {
-            tail->next = tmp;
-            tail = tail->next;
-        }
-        //insert between two exsisting
-        else
-        {
-            tmp->next = correct->next;
-            correct->next = tmp;
-        }
-    }
 
+        tmp->next = correct->next;
+        correct->next = tmp;
+
+    }
 
     //print the full list on the screen
     void write_list()
     {
         person *tmp = new person;
-        tmp = head;
+        tmp = head->next;
 
         system("cls");
 
@@ -102,7 +82,7 @@ public:
     {
         system("cls");
 
-        person *tmp = head;
+        person *tmp = head->next;
         person *maxim = tmp;
 
         while(tmp != NULL)
