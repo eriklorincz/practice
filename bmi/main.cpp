@@ -22,63 +22,69 @@ private:
 public:
     linked_list()
     {
-        head = NULL;
-        tail = NULL;
+        head = nullptr;
+        tail = nullptr;
     }
 
-    void add_end(string nname, double nweight, double nheight, double nbmi)
+    void add_ordered(string nname, double nweight, double nheight, double nbmi)
     {
+        person *temp = new person;
+        person *correct = new person;
+        temp = head;
+        correct = temp;
+
+
+        //searching for the correct place to insert the next
+        while ((temp != nullptr) && (temp->name < nname))
+        {
+            correct = temp;
+            temp = temp->next;
+        }
         person *tmp = new person;
+
+        //giving value
         tmp->name = nname;
         tmp->weight = nweight;
         tmp->height = nheight;
         tmp->bmi = nbmi;
-        tmp->next = NULL;
+        tmp->next = nullptr;
 
-        if (head == NULL)
+        //this is the first node
+        if (correct == nullptr)
         {
             head = tmp;
             tail = tmp;
         }
-        else
+        //the node has to be the new first
+        else if((correct == head) && (head->name > nname))
+        {
+            tmp->next = head;
+            head = tmp;
+        }
+        //insert to the end of the list
+        else if(correct->next == nullptr)
         {
             tail->next = tmp;
             tail = tail->next;
         }
+        //insert between two exsisting
+        else
+        {
+            tmp->next = correct->next;
+            correct->next = tmp;
+        }
     }
 
-    void add_first(string nname, double nweight, double nheight, double nbmi)
-    {
-        person *tmp = new person;
-        tmp->name = nname;
-        tmp->weight = nweight;
-        tmp->height = nheight;
-        tmp->bmi = nbmi;
 
-        tmp->next = head;
-        head = tmp;
-    }
-
-    void add_between(string nname, double nweight, double nheight, double nbmi, person *previous)
-    {
-        person *tmp = new person;
-        tmp->name = nname;
-        tmp->weight = nweight;
-        tmp->height = nheight;
-        tmp->bmi = nbmi;
-
-        tmp->next = previous->next;
-        previous->next = tmp;
-
-    }
-
+    //print the full list on the screen
     void write_list()
     {
-        person *tmp = head;
+        person *tmp = new person;
+        tmp = head;
 
         system("cls");
 
-        while (tmp != NULL)
+        while (tmp != nullptr)
         {
             cout << tmp->name << " " << tmp->weight << " kg " << tmp->height << " m  bmi: "<< tmp->bmi << endl;
             tmp = tmp->next;
@@ -90,22 +96,8 @@ public:
         return head;
     }
 
-    person* place(string sname)
-    {
-        person *tmp = head;
-        person *correct = tmp;
 
-        while ((tmp != NULL) && (tmp->name < sname))
-        {
-            correct = tmp;
-            tmp = tmp->next;
-        }
-
-        cout << correct->name << endl;
-
-        return correct;
-    }
-
+    //find the highest-bmi person and print the data on screen
     void maxbmi()
     {
         system("cls");
@@ -142,52 +134,37 @@ int main()
         cout << "Name: ";
         cin >> aname;
 
-        if (aname != "0")
-        {
-            cout << "Weight: ";
-            cin >> aweight;
+        if (aname == "0") break;
 
-            if(aweight != 0)
-            {
-                cout << "Height: ";
-                cin >> aheight;
+        cout << "Weight: ";
+        cin >> aweight;
 
-                if (aheight != 0)
-                {
-                    abmi = aweight / (aheight * aheight);
+        if(aweight == 0) break;
 
-                    if(a.gethead() == NULL)
-                    {
-                        a.add_end(aname, aweight, aheight, abmi);
-                    }
-                    else if ((a.place(aname) == a.gethead()) && (aname < a.gethead()->name))
-                    {
-                        a.add_first(aname, aweight, aheight, abmi);
-                    }
-                    else if (a.place(aname)->next == NULL)
-                    {
-                        a.add_end(aname, aweight, aheight, abmi);
-                    }
-                    else
-                    {
-                        a.add_between(aname, aweight, aheight, abmi, a.place(aname));
-                    }
+        cout << "Height: ";
+        cin >> aheight;
 
-                    a.write_list();
+        if (aheight == 0) break;
 
-                }
-            }
-        }
+        abmi = aweight / (aheight * aheight);
+
+        a.add_ordered(aname, aweight, aheight, abmi);
+        a.write_list();
+
     }
 
-    a.maxbmi();
-
-    person *i = a.gethead();
-    person *j = i;
-    while(i != NULL)
+    if (a.gethead() != nullptr)
     {
-        i = i->next;
-        free(j);
+        a.maxbmi();
+
+        person *i = a.gethead();
+        person *j = i;
+        while(i != NULL)
+        {
+            j = i;
+            i = i->next;
+            free(j);
+        }
     }
 
     return 0;
