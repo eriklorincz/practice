@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdlib>
 #include <ctime>
 #include <string>
 
@@ -15,41 +14,30 @@ struct person
 
 };
 
-class linked_list
+class Linked_list
 {
 private:
     person *head;
 
 public:
-    linked_list()
+    Linked_list()
     {
         head = new person;
         head->next = nullptr;
     }
 
-    void add_ordered(string nname, double nweight, double nheight, double nbmi)
+    void add_ordered(person *tmp)
     {
-        person *temp = new person;
-        person *correct = new person;
-        temp = head;
-        correct = temp;
+        person *temp = head;
+        person *correct = temp;
 
 
         //searching for the correct place to insert the next
-        while ((temp != nullptr) && (temp->name < nname))
+        while (temp  && (temp->name < tmp->name))
         {
             correct = temp;
             temp = temp->next;
         }
-
-        person *tmp = new person;
-
-        tmp->name = nname;
-        tmp->weight = nweight;
-        tmp->height = nheight;
-        tmp->bmi = nbmi;
-        tmp->next = nullptr;
-
 
         tmp->next = correct->next;
         correct->next = tmp;
@@ -59,8 +47,7 @@ public:
     //print the full list on the screen
     void write_list()
     {
-        person *tmp = new person;
-        tmp = head->next;
+        person *tmp = head->next;
 
         system("cls");
 
@@ -85,7 +72,7 @@ public:
         person *tmp = head->next;
         person *maxim = tmp;
 
-        while(tmp != NULL)
+        while(tmp != nullptr)
         {
             if (maxim->bmi < tmp->bmi)
             {
@@ -98,6 +85,18 @@ public:
 
     }
 
+    ~Linked_list()
+    {
+        person *i = head;
+        person *j = i;
+        while(i)
+        {
+            j = i;
+            i = i->next;
+            delete j;
+        }
+    }
+
 };
 
 int main()
@@ -107,7 +106,7 @@ int main()
     double aheight = -1;
     double abmi;
 
-    linked_list a;
+    Linked_list a;
 
     while((aname != "0") && (aweight != 0) && (aheight != 0))
     {
@@ -128,23 +127,22 @@ int main()
 
         abmi = aweight / (aheight * aheight);
 
-        a.add_ordered(aname, aweight, aheight, abmi);
+        person* nperson = new person;
+
+        nperson->name = aname;
+        nperson->weight = aweight;
+        nperson->height = aheight;
+        nperson->bmi = abmi;
+        nperson->next = nullptr;
+
+        a.add_ordered(nperson);
         a.write_list();
 
     }
 
-    if (a.gethead() != nullptr)
+    if (a.gethead()->next)
     {
         a.maxbmi();
-
-        person *i = a.gethead();
-        person *j = i;
-        while(i != NULL)
-        {
-            j = i;
-            i = i->next;
-            free(j);
-        }
     }
 
     return 0;
