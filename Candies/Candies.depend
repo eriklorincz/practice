@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1548267325 source:e:\info\c++\projectschool\candies\main.cpp
+	<iostream>
+	<vector>
+
