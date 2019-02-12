@@ -1,36 +1,31 @@
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
 int main()
 {
-    int n;
-    int i, j;
+    long int n, i;
+    double j;
     int steps = 0;
 
     cout << "The starting number: ";
     cin >> n;
+
     i = n;
-
-
-    while (i > 1)
+    while (i != 1)
     {
-        j = 1;
-        while (2 * j <= i)
+        j = log2(i);
+        if (j == floor(j))
         {
-            j = 2 * j;
-        }
-
-        if (j == i)
-        {
-            i = i / 2;
+                steps = steps + long(j);
+                i = 1;
         }
         else
         {
-            i = i - j;
+            i = i - pow(2, floor(j));
+            steps++;
         }
-
-        steps++;
     }
 
     if (steps % 2 == 0)
