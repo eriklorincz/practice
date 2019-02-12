@@ -4,65 +4,62 @@ using namespace std;
 
 int main()
 {
-    int a, b, x, y;
-    int i, j;
+    long int a, b, x, y;
+    short int i, j;
     cin>>a;
     cin>>b;
     cin>>x;
     cin>>y;
 
-    i = a;
-    j = b;
-
     if (b != 0)
     {
-        if(x > a)
+        if(abs(x - a) % b == 0)
         {
-            while (i < x)
-            {
-                i = i + b;
-            }
+           i = 0;
         }
         else
         {
-            while (i > x)
-            {
-                i = i - b;
-
-            }
+            i = 1;
         }
     }
-
+    else if (a == x)
+    {
+        i = 0;
+    }
+    else
+    {
+        i = 1;
+    }
     if (a != 0)
     {
-        if (i == x)
+        if (abs(y - b) % a == 0)
         {
-            if (y > b)
-            {
-                while(j < y)
-                {
-                    j = j + a;
-                }
-            }
-            else
-            {
-                while (j > y)
-                {
-                    j = j - a;
-                }
-            }
-
+            j = 0;
+        }
+        else
+        {
+            j = 1;
         }
     }
-
-    if ((i == x) && (j == y))
+    else if (b == y)
     {
-        cout << "YES";
+        j = 0;
+    }
+    else
+    {
+        j = 1;
+    }
+
+    if (i == 0 && j == 0)
+    {
+        cout << "Yes";
     }
     else
     {
         cout << "NO";
     }
+
+
 
     return 0;
 }
